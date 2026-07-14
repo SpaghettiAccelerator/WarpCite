@@ -1,0 +1,45 @@
+name: Release
+
+# Publishes the extension when a version tag (v*) is pushed.
+# Gallery steps are skipped until the corresponding secret is configured:
+#   OVSX_TOKEN — open-vsx.org access token (namespace: felixwieland)
+#   VSCE_TOKEN — Azure DevOps PAT with "Marketplace: Manage" scope
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      OVSX_TOKEN: ${{ secrets.OVSX_TOKEN }}
+      VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm ci
+
+      - name: Build VSIX
+        run: npm run package
+
+      - name: Publish to Open VSX
+        if: env.OVSX_TOKEN != ''
+        run: npx ovsx publish warpcite-*.vsix -p "$OVSX_TOKEN"
+
+      - name: Publish to VS Code Marketplace
+        if: env.VSCE_TOKEN != ''
+        run: npx vsce publish --packagePath warpcite-*.vsix -p "$VSCE_TOKEN"
+
+      - name: Attach VSIX to GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload "$GITHUB_REF_NAME" warpcite-*.vsix --clobber \
+            || gh release create "$GITHUB_REF_NAME" warpcite-*.vsix --title "$GITHUB_REF_NAME" --generate-notes

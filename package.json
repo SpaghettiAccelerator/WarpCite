@@ -1,0 +1,107 @@
+{
+  "name": "warpcite",
+  "displayName": "WarpCite",
+  "description": "OCR PDFs, create BibTeX citations and crosscheck Typst citations directly in VSCode.",
+  "version": "0.0.1",
+  "publisher": "felixwieland",
+  "icon": "icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SpaghettiAccelerator/WarpCite"
+  },
+  "license": "SEE LICENSE IN LICENSE",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "warpcite.generateBibtex",
+        "title": "Generate BibTex"
+      },
+      {
+        "command": "warpcite.runMistralOcr",
+        "title": "Run Document OCR"
+      },
+      {
+        "command": "warpcite.copyAgentInstructions",
+        "title": "WarpCite: Copy Agent Instructions"
+      }
+    ],
+    "configuration": {
+      "title": "WarpCite",
+      "properties": {
+        "warpcite.mistral.model": {
+          "type": "string",
+          "default": "mistral-ocr-latest",
+          "description": "Mistral OCR model used for document OCR and BibTeX annotation."
+        },
+        "warpcite.mistral.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Mistral API key used for document OCR and BibTeX annotation."
+        },
+        "warpcite.citationFunction": {
+          "type": "string",
+          "default": "dhbwCite",
+          "description": "Name of the Typst citation function WarpCite recognizes for hover previews and Cmd+click."
+        },
+        "warpcite.agentInstructions": {
+          "type": "null",
+          "markdownDescription": "[Copy Agent Instructions](command:warpcite.copyAgentInstructions) — copies the extension's `AGENT_INSTRUCTIONS.md` (instructions for AI coding agents) to the clipboard."
+        }
+      }
+    },
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "warpcite.generateBibtex",
+          "when": "resourceExtname == .pdf",
+          "group": "warpcite@1"
+        },
+        {
+          "command": "warpcite.runMistralOcr",
+          "when": "resourceExtname == .pdf",
+          "group": "warpcite@2"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "warpcite.generateBibtex",
+          "when": "resourceExtname == .pdf"
+        },
+        {
+          "command": "warpcite.runMistralOcr",
+          "when": "resourceExtname == .pdf"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "node scripts/package.js"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.9.2",
+    "esbuild": "^0.28.1",
+    "typescript": "^5.4.0"
+  },
+  "dependencies": {
+    "@mistralai/mistralai": "^2.4.1",
+    "@opentelemetry/api": "^1.9.1",
+    "markdown-it": "^14.3.0",
+    "pdfjs-dist": "^3.11.174"
+  }
+}

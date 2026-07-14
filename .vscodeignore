@@ -1,0 +1,13 @@
+.vscode/**
+.claude/**
+src/**
+out/**
+example/**
+node_modules/**
+scripts/**
+tsconfig.json
+CLAUDE.md
+.gitignore
+*.vsix
+logo.png
+**/*.map
