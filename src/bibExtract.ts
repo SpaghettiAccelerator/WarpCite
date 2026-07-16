@@ -1,4 +1,4 @@
-import { Mistral } from "@mistralai/mistralai";
+import { createMistralClient } from "./mistralClient";
 
 // v3 legacy build: last CommonJS release, loads in the extension host without ESM shims
 const pdfjs = require("pdfjs-dist/legacy/build/pdf.js");
@@ -158,7 +158,7 @@ export async function extractViaMistralAnnotation(
   fileName: string,
   model = "mistral-ocr-latest"
 ): Promise<BibFields | undefined> {
-  const client = new Mistral({ apiKey });
+  const client = createMistralClient(apiKey);
   const uploaded = await client.files.upload({
     file: { fileName, content: data },
     purpose: "ocr",

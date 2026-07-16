@@ -27,8 +27,9 @@ citation right where you write it.
 
 ## Quick start
 
-1. Set your Mistral API key in the settings (`warpcite.mistral.apiKey`) — click
-   the WarpCite item in the status bar to open them.
+1. Set your Mistral API key: run **WarpCite: Set Mistral API Key** from the
+   command palette. The key is kept in VS Code secret storage, not in your
+   settings files.
 2. Put each source PDF in its own folder: `sources/<source-name>/paper.pdf`.
 3. Right-click the PDF: *Run Document OCR*, then *Generate BibTex*.
 4. Cite in your `.typ` file and hover the call to verify the passage:
@@ -41,7 +42,6 @@ citation right where you write it.
 
 | Setting | Default | Description |
 | --- | --- | --- |
-| `warpcite.mistral.apiKey` | – | Mistral API key used for OCR and metadata extraction |
 | `warpcite.mistral.model` | `mistral-ocr-latest` | OCR model |
 | `warpcite.citationFunction` | `dhbwCite` | Typst citation function recognized for hover and Cmd+click |
 

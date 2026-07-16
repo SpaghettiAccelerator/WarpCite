@@ -2,7 +2,7 @@
   "name": "warpcite",
   "displayName": "WarpCite",
   "description": "OCR PDFs, create BibTeX citations and crosscheck Typst citations directly in VSCode.",
-  "version": "0.0.1",
+  "version": "0.0.8",
   "publisher": "felixwieland",
   "icon": "icon.png",
   "repository": {
@@ -13,6 +13,9 @@
   "engines": {
     "vscode": "^1.85.0"
   },
+  "extensionKind": [
+    "workspace"
+  ],
   "categories": [
     "Other"
   ],
@@ -33,6 +36,22 @@
       {
         "command": "warpcite.copyAgentInstructions",
         "title": "WarpCite: Copy Agent Instructions"
+      },
+      {
+        "command": "warpcite.setMistralApiKey",
+        "title": "WarpCite: Set Mistral API Key"
+      },
+      {
+        "command": "warpcite.rebuildBibliography",
+        "title": "WarpCite: Rebuild Bibliography"
+      },
+      {
+        "command": "warpcite.renameToFolderName",
+        "title": "Rename to Folder Name"
+      },
+      {
+        "command": "warpcite.testMistralConnection",
+        "title": "WarpCite: Test Mistral Connection"
       }
     ],
     "configuration": {
@@ -46,7 +65,8 @@
         "warpcite.mistral.apiKey": {
           "type": "string",
           "default": "",
-          "description": "Mistral API key used for document OCR and BibTeX annotation."
+          "scope": "machine",
+          "markdownDeprecationMessage": "**Deprecated:** the API key now lives in VS Code secret storage. Run the **WarpCite: Set Mistral API Key** command instead. A value set here is migrated into secret storage (and removed from settings) automatically on startup."
         },
         "warpcite.citationFunction": {
           "type": "string",
@@ -70,6 +90,11 @@
           "command": "warpcite.runMistralOcr",
           "when": "resourceExtname == .pdf",
           "group": "warpcite@2"
+        },
+        {
+          "command": "warpcite.renameToFolderName",
+          "when": "resourceExtname == .pdf || resourceFilename =~ /\\.ocr\\.json$/",
+          "group": "warpcite@3"
         }
       ],
       "commandPalette": [
@@ -80,6 +105,10 @@
         {
           "command": "warpcite.runMistralOcr",
           "when": "resourceExtname == .pdf"
+        },
+        {
+          "command": "warpcite.renameToFolderName",
+          "when": "resourceExtname == .pdf || resourceFilename =~ /\\.ocr\\.json$/"
         }
       ]
     }
